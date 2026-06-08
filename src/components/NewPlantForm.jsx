@@ -1,17 +1,37 @@
-import React from "react";
+import React, { useState } from "react";
 
-function NewPlantForm() {
+function PlantCard({ plant }) {
+  const [inStock, setInStock] = useState(plant.inStock);
+
+  function handleStockClick() {
+    setInStock(!inStock);
+  }
+
   return (
-    <div className="new-plant-form">
-      <h2>New Plant</h2>
-      <form>
-        <input type="text" name="name" placeholder="Plant name" />
-        <input type="text" name="image" placeholder="Image URL" />
-        <input type="number" name="price" step="0.01" placeholder="Price" />
-        <button type="submit">Add Plant</button>
-      </form>
-    </div>
+    <li className="card" data-testid="plant-item">
+      <img
+        src={plant.image}
+        alt={plant.name}
+      />
+
+      <h4>{plant.name}</h4>
+
+      <p>Price: {plant.price}</p>
+
+      {inStock ? (
+        <button
+          className="primary"
+          onClick={handleStockClick}
+        >
+          In Stock
+        </button>
+      ) : (
+        <button onClick={handleStockClick}>
+          Out of Stock
+        </button>
+      )}
+    </li>
   );
 }
 
-export default NewPlantForm;
+export default PlantCard;

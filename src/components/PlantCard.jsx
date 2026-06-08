@@ -1,18 +1,18 @@
 import React from "react";
 
-function PlantCard() {
+function Search({ onSearchChange }) {
   return (
-    <li className="card" data-testid="plant-item">
-      <img src={"https://via.placeholder.com/400"} alt={"plant name"} />
-      <h4>{"plant name"}</h4>
-      <p>Price: {"plant price"}</p>
-      {true ? (
-        <button className="primary">In Stock</button>
-      ) : (
-        <button>Out of Stock</button>
-      )}
-    </li>
+    <div className="searchbar">
+      <label htmlFor="search">Search Plants:</label>
+
+      <input
+        type="text"
+        id="search"
+        placeholder="Type a name to search..."
+        onChange={(e) => onSearchChange(e.target.value)}
+      />
+    </div>
   );
 }
 
-export default PlantCard;
+export default Search;
