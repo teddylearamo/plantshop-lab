@@ -1,18 +1,30 @@
-import React from "react";
+import React, { useState } from "react";
 
-function Search({ onSearchChange }) {
+function PlantCard({ plant }) {
+  const [inStock, setInStock] = useState(plant.inStock);
+
+  function handleClick() {
+    setInStock(!inStock);
+  }
+
   return (
-    <div className="searchbar">
-      <label htmlFor="search">Search Plants:</label>
+    <li className="card" data-testid="plant-item">
+      <img src={plant.image} alt={plant.name} />
 
-      <input
-        type="text"
-        id="search"
-        placeholder="Type a name to search..."
-        onChange={(e) => onSearchChange(e.target.value)}
-      />
-    </div>
+      <h4>{plant.name}</h4>
+
+      <p>Price: {plant.price}</p>
+
+      {inStock ? (
+        <button className="primary" onClick={handleClick}>
+          In Stock
+        </button>
+      ) : (
+        <button onClick={handleClick}>
+          Out of Stock
+        </button>
+      )}
+    </li>
   );
 }
-
-export default Search;
+export default PlantCard;

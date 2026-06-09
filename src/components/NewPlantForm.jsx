@@ -1,37 +1,71 @@
 import React, { useState } from "react";
 
-function PlantCard({ plant }) {
-  const [inStock, setInStock] = useState(plant.inStock);
+function NewPlantForm({ onAddPlant }) {
+  const [name, setName] = useState("");
+  const [image, setImage] = useState("");
+  const [price, setPrice] = useState("");
 
-  function handleStockClick() {
-    setInStock(!inStock);
+  function handleSubmit(event) {
+    event.preventDefault();
+
+    const newPlant = {
+      name,
+      image,
+      price,
+      inStock: true,
+    };
+
+    fetch("http://localhost:6001/plants", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(newPlant),
+    })
+      .then((r) => r.json())
+      .then((plant) => onAddPlant(plant));
+
+    setName("");
+    setImage("");
+    setPrice("");
   }
 
   return (
-    <li className="card" data-testid="plant-item">
-      <img
-        src={plant.image}
-        alt={plant.name}
-      />
+    <div className="new-plant-form">
+      <h2>New Plant</h2>
 
-      <h4>{plant.name}</h4>
+      <form onSubmit={handleSubmit}>
+        <input
+          type="text"
+          name="name"
+          placeholder="Plant name"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+        />
 
-      <p>Price: {plant.price}</p>
+        <input
+          type="text"
+          name="image"
+          placeholder="Image URL"
+          value={image}
+          onChange={(e) => setImage(e.target.value)}
+        />
 
-      {inStock ? (
-        <button
-          className="primary"
-          onClick={handleStockClick}
-        >
-          In Stock
+        <input
+          type="number"
+          name="price"
+          step="0.01"
+          placeholder="Price"
+          value={price}
+          onChange={(e) => setPrice(e.target.value)}
+        />
+
+        <button type="submit">
+          Add Plant
         </button>
-      ) : (
-        <button onClick={handleStockClick}>
-          Out of Stock
-        </button>
-      )}
-    </li>
+      </form>
+    </div>
   );
 }
 
-export default PlantCard;
+export default NewPlantForm;
